@@ -20,13 +20,15 @@ export class AppComponent {
   }
 
   onSend() {
+    debugger;
     const tokensStr = this.form.controls['tokens'].value as string;
     const tokensArray = tokensStr.split(',').map(token => token.trim()).filter(Boolean);
-    this.appService.postData(tokensArray).subscribe(response => {
-      console.log('Response from server:', response);
-    }, error => {
-      console.error('Error:', error);
-    })
+    console.log(tokensArray)
+    // this.appService.postData(tokensArray).subscribe(response => {
+    //   console.log('Response from server:', response);
+    // }, error => {
+    //   console.error('Error:', error);
+    // })
   }
 
 }
