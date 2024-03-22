@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: twitter-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: twitter-api
+  template:
+    metadata:
+      labels:
+        app: twitter-api
+    spec:
+      containers:
+      - name: twitter-api
+        image: twitter-api:0.0.1
+        ports:
+        - containerPort: 8001

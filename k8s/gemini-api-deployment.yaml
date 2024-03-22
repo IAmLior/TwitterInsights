@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gemini-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gemini-api
+  template:
+    metadata:
+      labels:
+        app: gemini-api
+    spec:
+      containers:
+      - name: gemini-api
+        image: gemini-api:0.0.1
+        ports:
+        - containerPort: 8000

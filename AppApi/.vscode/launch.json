@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "FastAPI Debug",
+            "type": "python",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "main:app",
+                "--reload",
+                "--port",
+                "8000"
+            ],
+            "console": "integratedTerminal",
+            "env": {
+                "TWITTER-API-PATH": "http://localhost:8001/",
+                "GEMINI-API-PATH": "http://localhost:8000/"
+            }
+        }
+    ]
+}

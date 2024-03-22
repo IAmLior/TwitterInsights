@@ -1,10 +1,10 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from AppApi.routers import app
+from routers import app as approuter
 app = FastAPI()
 
-app.include_router(app.GeminiRouter.router)
+app.include_router(approuter.AppRouter.router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -15,4 +15,4 @@ app.add_middleware(
 )
 
 if __name__ == "__main__":
-    uvicorn.run(app)
+    uvicorn.run(app, port=8002)
