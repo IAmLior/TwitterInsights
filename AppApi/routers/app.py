@@ -3,6 +3,7 @@ from handlers.app import AppHandler
 
 app_handler = AppHandler()
 
+
 class AppRouter:
 
     router = APIRouter(prefix="/app")
@@ -10,6 +11,8 @@ class AppRouter:
     @router.post("/getInsights")
     async def get_insights(tokens: list[str]):
         try:
-            app_handler.get_insights(tokens)
+            result = app_handler.get_insights(tokens)
+            return {"result": result}
         except Exception as ex:
-            raise HTTPException(status_code=ex.status_code, detail=ex.detail)
+            print(f"########## {ex}")
+            raise HTTPException(status_code=500, detail="Internal Server Error")
