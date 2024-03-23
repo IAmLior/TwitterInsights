@@ -14,5 +14,4 @@ class AppRouter:
             result = app_handler.get_insights(tokens)
             return {"result": result}
         except Exception as ex:
-            print(f"########## {ex}")
-            raise HTTPException(status_code=500, detail="Internal Server Error")
+            raise HTTPException(status_code=500, detail=ex)
