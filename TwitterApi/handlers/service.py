@@ -3,17 +3,29 @@ import pandas as pd
 import re
 import requests
 from requests_oauthlib import OAuth1
+from dotenv import load_dotenv
 
+load_dotenv()
 
 CSV_FILENAME = "tweets.csv"
 CSV_FOLDER = "csvs_data"
 CSV_PATH = os.path.join(os.path.dirname(__file__), "..", CSV_FOLDER, CSV_FILENAME)
 TRASH_HOLD = 50
 
-CONSUMER_KEY = "4BybQiGUW0UojkYGDZW9giUQ9"
-CONSUMER_SECRET_KEY = "WwbpIts6cs4qioAf1Xn30wnnfNyKp7nEVCtOEvrwZalnu8KP4G"
-ACCESS_TOKEN = "1758919085021126656-pMs4ryjqUjdUljjoh4QMgp75qT4Lsn"
-ACCESS_TOKEN_SECRET = "7ZXyMN68cpTubahe5IZHZSwkTJfTbhLumosyfbP80cHPy"
+required_keys = [
+    "CONSUMER_KEY",
+    "CONSUMER_SECRET_KEY",
+    "ACCESS_TOKEN",
+    "ACCESS_TOKEN_SECRET",
+]
+for key in required_keys:
+    if not os.getenv(key):
+        raise EnvironmentError(f"Missing required environment variable: {key}")
+
+CONSUMER_KEY = os.environ.get("CONSUMER_KEY")
+CONSUMER_SECRET_KEY = os.environ.get("CONSUMER_SECRET_KEY")
+ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
+ACCESS_TOKEN_SECRET = os.environ.get("ACCESS_TOKEN_SECRET")
 
 
 # Set up the OAuth1 authentication
@@ -103,7 +115,3 @@ class Service:
         tweet = tweet.replace("\n", " ")
 
         return tweet
-
-
-# data_fetcher = DataFetcher()
-# res = data_fetcher.fetch(["israel"], False)

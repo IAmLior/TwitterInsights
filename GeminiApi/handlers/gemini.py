@@ -1,21 +1,32 @@
 import google.generativeai as genai
-from models.gemini import TweetData
 import asyncio
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+required_keys = [
+    "API_KEY",
+    "MODEL_NAME",
+]
+
+for key in required_keys:
+    if not os.getenv(key):
+        raise EnvironmentError(f"Missing required environment variable: {key}")
+
+API_KEY = os.getenv("API_KEY")
+MODEL_NAME = os.getenv("MODEL_NAME")
 
 
 class GeminiHandler:
     def __init__(self):
-        self.api_key = "AIzaSyAd05wJ2mZwVazFxnXa_sbtHQ3jTcHYtpU"
-        self.model_name = "gemini-pro"
+        self.api_key = API_KEY
+        self.model_name = MODEL_NAME
+
         genai.configure(api_key=self.api_key)
+
         self.model = genai.GenerativeModel(model_name=self.model_name)
-        # self.categorize_prompt = '''
-        # Given a tweet looks like: {"author": "tweet's author username", "text": "the tweet text"}.
-        # According to the author name and the text of the tweet, categorize the tweet to 3 or less main categories. Return a 3-topics array using the following format:
-        # ["topic", "topic", "topic"]
-        # Tweet:
-        # {}
-        # '''
+
         self.categorize_list_prompt = """
         Given an array of tweets, each tweet will look like: {"author": "tweet's author username", "text": "the tweet text"}.
         For each tweet, categorize it to 3 main categories that are most relevant for this tweet. Return an array of 3-topics arrays using the following format:

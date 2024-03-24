@@ -1,6 +1,5 @@
 from fastapi import APIRouter, HTTPException, Body
 from handlers.gemini import GeminiHandler
-from models.gemini import TweetData
 
 gemini_handler = GeminiHandler()
 

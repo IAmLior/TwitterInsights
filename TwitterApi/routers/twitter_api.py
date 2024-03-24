@@ -20,7 +20,6 @@ async def get_data(tokens: List[str] = Query(None)):
 
 @router.post("/post_tweet/")
 async def post_tweet(request: PostTweetRequest):
-    print(request.text)
     try:
         response = service.post_tweet(request.text)
         return {"result": response, "status_code": status.HTTP_201_CREATED}
