@@ -12,7 +12,6 @@ class GeminiRouter:
     @router.post("/categorize")
     async def categorize(tweets: list[dict] = Body(...)):
         try:
-            return gemini_handler.categorize(tweets)
+            return await gemini_handler.categorize(tweets)
         except Exception as ex:
-            print(f"########## {ex}")
-            raise HTTPException(status_code=500, detail="Internal Server Error")
+            return {"result": str(ex), "status_code": 500}

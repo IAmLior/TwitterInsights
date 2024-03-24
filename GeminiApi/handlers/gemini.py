@@ -1,5 +1,6 @@
 import google.generativeai as genai
 from models.gemini import TweetData
+import asyncio
 
 
 class GeminiHandler:
@@ -17,7 +18,7 @@ class GeminiHandler:
         # '''
         self.categorize_list_prompt = """
         Given an array of tweets, each tweet will look like: {"author": "tweet's author username", "text": "the tweet text"}.
-        According to the author name and the text of each tweet, categorize each tweet to 3 main categories that are most relevant for this tweet. Return an array of 3-topics arrays using the following format:
+        For each tweet, categorize it to 3 main categories that are most relevant for this tweet. Return an array of 3-topics arrays using the following format:
         [
             ["topic", "topic", "topic"],
 	        ["topic", "topic", "topic"],
@@ -27,8 +28,37 @@ class GeminiHandler:
         
         """
 
-    def categorize(self, tweets: list[dict]):
-        prompt_parts = [f"{self.categorize_list_prompt}{tweets}"]
-        print(prompt_parts)
-        response = self.model.generate_content(prompt_parts)
-        return eval(response.text)
+    async def generate_content(self, tweets: list[dict]):
+        tasks = []
+
+        async def generate_task(data: list[dict]):
+            try:
+                prompt_parts = [f"{self.categorize_list_prompt}{data}"]
+                response = self.model.generate_content(prompt_parts)
+                response = eval(response.text)
+            except Exception as e:
+                print(e)
+
+            return response
+
+        index = 0
+        while index < len(tweets):
+            task = asyncio.create_task(generate_task(tweets[index : index + 10]))
+            tasks.append(task)
+            index += 10
+
+        generated_content = await asyncio.gather(*tasks)
+        return generated_content
+
+    async def categorize(self, tweets: list[dict]):
+        try:
+            generated_content = await self.generate_content(tweets)
+            response = []
+            for content in generated_content:
+                response.extend(content)
+
+            return response
+
+        except Exception as ex:
+            print(f"Error while categorizing tweets: {ex}")
+            raise Exception(f"Error while categorizing tweets {ex}")

@@ -1,7 +1,8 @@
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, status
 from handlers.service import Service
 from typing import List
 import json
+from models.post_tweet_request import PostTweetRequest
 
 
 service = Service()
@@ -18,5 +19,10 @@ async def get_data(tokens: List[str] = Query(None)):
 
 
 @router.post("/post_tweet/")
-async def post_tweet(text: str):
-    return service.post_tweet(text)
+async def post_tweet(request: PostTweetRequest):
+    print(request.text)
+    try:
+        response = service.post_tweet(request.text)
+        return {"result": response, "status_code": status.HTTP_201_CREATED}
+    except Exception as ex:
+        return {"result": str(ex), "status_code": status.HTTP_500_INTERNAL_SERVER_ERROR}

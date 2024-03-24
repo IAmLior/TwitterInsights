@@ -48,12 +48,15 @@ class Service:
 
     def post_tweet(self, text: str):
         payload = {"text": text}
-        response = requests.post(self.api_url, auth=self.auth, json=payload)
+        try:
+            response = requests.post(self.api_url, auth=self.auth, json=payload)
+            if response.status_code != 201:
+                raise Exception(f"Failed to post tweet: {response.content}")
 
-        if response.status_code == 201:
             return "Tweet successfully posted."
-        else:
-            return f"Failed to post tweet: {response.status_code}"
+        except Exception as ex:
+            print(f"Error while posting tweet: {ex}")
+            raise Exception("Error while posting tweet")
 
     def fetch_from_df(self, tokens):
         matched_tweets = []

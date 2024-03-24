@@ -26,15 +26,15 @@ class AppHandler:
             raise Exception("Error while fetching data from Twitter API")
 
         try:
-            gemini_params = twitter_response.json()["result"]
+            gemini_params = twitter_response.json()["result"] or []
             gemini_response = requests.post(
                 url=f"{self.gemini_api_path}/gemini/categorize",
-                data=json.dumps(gemini_params[:3]),
+                data=json.dumps(gemini_params[:100]),
             )
 
             if gemini_response.status_code != 200:
                 raise Exception(
-                    f"Error while fetching data from Gemini API: {gemini_response.content}"
+                    f"Error in response from Gemini API: {gemini_response.content}"
                 )
 
             return gemini_response.json()
@@ -42,3 +42,19 @@ class AppHandler:
         except Exception as ex:
             print(f"Error while fetching data from Gemini API: {ex}")
             raise Exception("Error while fetching data from Gemini API")
+
+    def post_tweet(self, tweet: str):
+        try:
+            response = requests.post(
+                url=f"{self.twitter_api_path}/post_tweet/",
+                data=json.dumps({"text": tweet}),
+            )
+            if response.status_code != 200:
+                raise Exception(f"Error while posting tweet: {response.content}")
+
+            response = response.json()
+            return response["result"]
+
+        except Exception as ex:
+            print(f"Error while posting tweet: {ex}")
+            raise Exception("Error while posting tweet")
