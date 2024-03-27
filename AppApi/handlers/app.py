@@ -5,10 +5,8 @@ import json
 
 class AppHandler:
     def __init__(self):
-        self.twitter_api_path = "http://localhost:8002"
-        self.gemini_api_path = "http://localhost:8001"
-        # self.twitter_api_path = os.environ['TWITTER-API-PATH']
-        # self.gemini_api_path = os.environ['GEMINI-API-PATH']
+        self.twitter_api_path = "http://twitter-api-service:8002"
+        self.gemini_api_path = "http://gemini-api-service:8001/gemini"
 
     def get_insights(self, request: list[str]):
         twitter_params = request

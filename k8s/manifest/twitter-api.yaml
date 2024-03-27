@@ -1,0 +1,33 @@
+# twitter-api-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: twitter-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: twitter-api
+  template:
+    metadata:
+      labels:
+        app: twitter-api
+    spec:
+      containers:
+      - name: twitter-api
+        image: twitter_api:1.0.0
+        ports:
+        - containerPort: 8002
+---
+# twitter-api-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: twitter-api-service
+spec:
+  selector:
+    app: twitter-api
+  ports:
+    - protocol: TCP
+      port: 8002
+      targetPort: 8002
