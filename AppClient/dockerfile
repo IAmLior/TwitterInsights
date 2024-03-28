@@ -1,13 +1,28 @@
-# Stage 1: Build the Angular app
-FROM bitnami/node:14 AS build
+# # Stage 1: Build the Angular app
+# FROM bitnami/node:14 AS build
+# WORKDIR /app
+# COPY . .
+# RUN npm install
+# RUN npm run build -- 
+
+# # Stage 2: Serve the Angular app using Nginx
+# FROM bitnami/nginx:latest
+# COPY --from=build /app/dist/out /app
+# COPY nginx.conf /opt/bitnami/nginx/conf/server_blocks/default.conf
+# EXPOSE 8080
+# CMD ["nginx", "-g", "daemon off;"]
+
+
+
+#stage 1
+FROM node:14 as node
 WORKDIR /app
 COPY . .
 RUN npm install
-RUN npm run build -- --output-path=./dist/out
+RUN npm run build --prod
 
-# Stage 2: Serve the Angular app using Nginx
-FROM bitnami/nginx:latest
-COPY --from=build /app/dist/out /app
-COPY nginx.conf /opt/bitnami/nginx/conf/server_blocks/default.conf
+#stage 2
+FROM nginx:alpine
+COPY --from=node /app/dist/twitter-insights /usr/share/nginx/html 
 EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]

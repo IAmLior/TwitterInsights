@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -9,8 +9,20 @@ export class AppService {
 
   constructor(private http: HttpClient) { }
 
-  postData(data: any): Observable<any> {
-    const url = '';
-    return this.http.post<any>(url, data);
+  getInsights(tokensArr: string[]): Observable<any> {
+    const url = '/app/getInsights/';
+    let params = new HttpParams();
+    tokensArr.forEach(token => {
+      params = params.append('tokens', token);
+    });
+
+    return this.http.get<any>(url, {params});
+  }
+
+  postTweet(tweet: string): Observable<any> {
+    const url = '/app/postTweet/';
+    let params = new HttpParams();
+    params = params.append('text', tweet);
+    return this.http.get<any>(url, {params});
   }
 }

@@ -23,25 +23,54 @@
 
   </div>
 
-  <h2>Insert one or more words for search</h2>
-  <h2>See the Twitter Hot Trends related to this words!!</h2>
-
-  <form [formGroup]="form" class="form">
-    <mat-form-field appearance="fill">
-      <mat-label>Insert some words...</mat-label>
-      <input matInput placeholder="Israel, War" formControlName="tokens">
-    </mat-form-field>
+  <h2>See the Twitter Hot Trends by your words!!</h2>
+  <div class="form-container">
+    <form [formGroup]="form" class="form">
+      <mat-form-field appearance="fill">
+        <mat-label>Insert some words...</mat-label>
+        <input matInput placeholder="Israel, War" formControlName="tokens">
+      </mat-form-field>
+    </form>
   
-    <mat-slide-toggle formControlName="isPrd">
-      Production Mode?!
-    </mat-slide-toggle>
-  </form>
+    <button mat-raised-button (click)="getInsights()">Get Insights</button>
+  </div>
 
-  <button mat-raised-button (click)="onSend()">Send</button>
 
-  {{form.value | json}}
+  <!-- <div style="height: 400px;" *ngIf="this.data">
+    <ngx-charts-bar-vertical
+      [view]="[700,400]"
+      [results]="data"
+      [xAxis]="true"
+      [yAxis]="true"
+      [legend]="true"
+      [showXAxisLabel]="true"
+      [showYAxisLabel]="true"
+      xAxisLabel="String"
+      yAxisLabel="Count">
+    </ngx-charts-bar-vertical>
+  </div> -->
 
+  <div style="height: 400px;">
+    <ngx-charts-pie-grid
+      *ngIf="this.data"
+      [view]="[2000,400]"
+      [results]="data"
+      [designatedTotal]="totalItems">
+    </ngx-charts-pie-grid>
+  </div>
+
+  <h2>Insert what's on your mind and post it in our twitter page!</h2>
+  <div class="form-container">
+    <form [formGroup]="form" class="form">
+      <mat-form-field appearance="fill">
+        <mat-label>Insert some words...</mat-label>
+        <input matInput placeholder="What's on your mind?" formControlName="tweet">
+      </mat-form-field>
+    </form>
   
+    <button mat-raised-button (click)="postTweet()">Post a Tweet</button>
+  </div>
+
   
   <svg id="clouds" xmlns="http://www.w3.org/2000/svg" width="2611.084" height="485.677" viewBox="0 0 2611.084 485.677">
     <title>Gray Clouds Background</title>
