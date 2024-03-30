@@ -6,7 +6,7 @@ import json
 class AppHandler:
     def __init__(self):
         self.twitter_api_path = "http://twitter-api-service:8002"
-        self.gemini_api_path = "http://gemini-api-service:8001/gemini"
+        self.gemini_api_path = "http://gemini-api-service:8001"
 
     def get_insights(self, request: list[str]):
         twitter_params = request
@@ -22,6 +22,8 @@ class AppHandler:
         except Exception as ex:
             print(f"Error while fetching data from Twitter API: {ex}")
             raise Exception("Error while fetching data from Twitter API")
+
+        print(f"Twiiter success: {twitter_response.json()['result']}")
 
         try:
             gemini_params = twitter_response.json()["result"] or []
@@ -39,7 +41,7 @@ class AppHandler:
 
         except Exception as ex:
             print(f"Error while fetching data from Gemini API: {ex}")
-            raise Exception("Error while fetching data from Gemini API")
+            raise Exception(f"Error while fetching data from Gemini API: {ex}")
 
     def post_tweet(self, tweet: str):
         try:
