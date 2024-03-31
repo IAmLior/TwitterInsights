@@ -48,7 +48,7 @@ class GeminiHandler:
                 response = self.model.generate_content(prompt_parts)
                 response = eval(response.text)
             except Exception as e:
-                print(e)
+                raise Exception(f"Error while generating content: {e}")
 
             return response
 
@@ -71,5 +71,4 @@ class GeminiHandler:
             return response
 
         except Exception as ex:
-            print(f"Error while categorizing tweets: {ex}")
             raise Exception(f"Error while categorizing tweets {ex}")

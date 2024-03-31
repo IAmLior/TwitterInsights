@@ -22,10 +22,7 @@ class AppHandler:
                     f"Error while fetching data from Twitter API: {twitter_response.content}"
                 )
         except Exception as ex:
-            print(f"Error while fetching data from Twitter API: {ex}")
-            raise Exception("Error while fetching data from Twitter API")
-
-        print(f"Twiiter success: {twitter_response.json()['result']}")
+            raise Exception(f"Error while fetching data from Twitter API: {ex}")
 
         try:
             gemini_params = twitter_response.json()["result"] or []
@@ -42,7 +39,6 @@ class AppHandler:
             return gemini_response.json()
 
         except Exception as ex:
-            print(f"Error while fetching data from Gemini API: {ex}")
             raise Exception(f"Error while fetching data from Gemini API: {ex}")
 
     def post_tweet(self, tweet: str):
@@ -58,5 +54,4 @@ class AppHandler:
             return response["result"]
 
         except Exception as ex:
-            print(f"Error while posting tweet: {ex}")
-            raise Exception("Error while posting tweet")
+            raise Exception(f"Error while posting tweet: {ex}")

@@ -21,7 +21,6 @@ class AppRouter:
     async def post_tweet(text: str):
         try:
             result = app_handler.post_tweet(text)
-            print(result)
             return {"result": result}
         except Exception as ex:
             raise HTTPException(status_code=500, detail=ex)
