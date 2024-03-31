@@ -2,17 +2,19 @@ import requests
 import os
 import json
 
+TWITTER_API_PATH = "http://twitter-api-service:8002"
+GEMINI_API_PATH = "http://gemini-api-service:8001"
+
 
 class AppHandler:
     def __init__(self):
-        self.twitter_api_path = "http://twitter-api-service:8002"
-        self.gemini_api_path = "http://gemini-api-service:8001"
+        pass
 
     def get_insights(self, request: list[str]):
         twitter_params = request
         try:
             twitter_response = requests.get(
-                url=f"{self.twitter_api_path}/get_data/",
+                url=f"{TWITTER_API_PATH}/get_data/",
                 params={"tokens": twitter_params},
             )
             if twitter_response.status_code != 200:
@@ -28,7 +30,7 @@ class AppHandler:
         try:
             gemini_params = twitter_response.json()["result"] or []
             gemini_response = requests.post(
-                url=f"{self.gemini_api_path}/gemini/categorize",
+                url=f"{GEMINI_API_PATH}/gemini/categorize",
                 data=json.dumps(gemini_params[:100]),
             )
 
@@ -46,7 +48,7 @@ class AppHandler:
     def post_tweet(self, tweet: str):
         try:
             response = requests.post(
-                url=f"{self.twitter_api_path}/post_tweet/",
+                url=f"{TWITTER_API_PATH}/post_tweet/",
                 data=json.dumps({"text": tweet}),
             )
             if response.status_code != 200:

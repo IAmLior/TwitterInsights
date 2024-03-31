@@ -10,7 +10,7 @@ export class AppService {
   constructor(private http: HttpClient) { }
 
   getInsights(tokensArr: string[]): Observable<any> {
-    const url = '/app/getInsights/';
+    const url = 'http://api-app.minikube.local/app/getInsights/';
     let params = new HttpParams();
     tokensArr.forEach(token => {
       params = params.append('tokens', token);
@@ -20,9 +20,9 @@ export class AppService {
   }
 
   postTweet(tweet: string): Observable<any> {
-    const url = '/app/postTweet/';
+    const url = 'http://api-app.minikube.local/app/postTweet/';
     let params = new HttpParams();
     params = params.append('text', tweet);
-    return this.http.get<any>(url, {params});
+    return this.http.post<any>(url, null, {params});
   }
 }

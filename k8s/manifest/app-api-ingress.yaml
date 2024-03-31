@@ -1,0 +1,18 @@
+# app-api-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-api-ingress
+spec:
+  rules:
+  - host: "api-app.minikube.local"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: app-api-service
+            port:
+              number: 8003
+              
